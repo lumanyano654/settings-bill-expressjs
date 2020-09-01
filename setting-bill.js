@@ -160,13 +160,13 @@ module.exports = function billWithSettings() {
     }
 
     function totals() {
-        let totalSmsCost = getTotal('sms')
-        let totalCallCost = getTotal('call')
+        let totalSmsCost = getTotal('sms').toFixed(2)
+        let totalCallCost = getTotal('call').toFixed(2)
 
         return {
             totalSmsCost,
             totalCallCost,
-            grandTotal: grandTotal()
+            grandTotal: grandTotal().toFixed(2)
         }
     }
 
