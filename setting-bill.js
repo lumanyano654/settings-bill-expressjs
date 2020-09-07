@@ -1,9 +1,9 @@
 module.exports = function billWithSettings() {
 
-    var theCallCost = 0;
-    var theSmsCost = 0;
-    var theWarningLevel = 0;
-    var theCriticalLevel = 0;
+    var theCallCost;
+    var theSmsCost;
+    var theWarningLevel;
+    var theCriticalLevel;
 
     var totalCallCost = 0;
     var totalSmsCost = 0;
@@ -55,7 +55,7 @@ module.exports = function billWithSettings() {
     }
 
     function makeCall() {
-        if (!hasReachedCriticalLevel()) {
+        if (!hasReachedCriticalLevel2()) {
             totalCallCost += theCallCost;
         }
 
@@ -73,28 +73,14 @@ module.exports = function billWithSettings() {
     }
 
     function sendSms() {
-        if (!hasReachedCriticalLevel()) {
+        if (!hasReachedCriticalLevel2()) {
             return totalSmsCost += theSmsCost;
         }
     }
 
-    function hasReachedCriticalLevel() {
+    function hasReachedCriticalLevel2() {
         return getTotalCost() >= getCriticalLevel();
     }
-
-
-    function totalClassName() {
-        if (hasReachedCriticalLevel()) {
-            return "critical";
-        }
-
-        if (getTotalCost() >= getWarningLevel()) {
-
-
-            return "warning";
-        }
-    }
-
 
 
 
@@ -118,22 +104,31 @@ module.exports = function billWithSettings() {
     }
 
     function recordAction(action) {
-        var cost = 0;
-
-        
-     if (action === "sms") {
-            cost = theSmsCost
+       if(action ){
+        if(!hasReachedCriticalLevel2()){
+            var cost = 0;
+    
+            
+         if (action === "sms") {
+                cost = theSmsCost
+            }
+    
+            else if (action === "call") {
+                cost = theCallCost
+            }
+            actionList.push({
+                type: action,
+                cost,
+                timeStamp: new Date()
+            })
+    
+            
         }
-
-        else if (action === "call") {
-            cost = theCallCost
-        }
-        actionList.push({
-            type: action,
-            cost,
-            timestamp: new Date()
-        })
-    }
+           
+       }
+       
+      
+}
 
     function actions() {
         return actionList
@@ -141,8 +136,13 @@ module.exports = function billWithSettings() {
 
 
     function actionsFor(type) {
+    
         return actionList.filter((action) => action.type === type)
+    
+
     }
+    
+
 
     function getTotal(type) {
         return actionList.reduce((total, action) => {
@@ -181,12 +181,22 @@ module.exports = function billWithSettings() {
 
     function hasReachedCriticalLevel2() {
         total = grandTotal();
-        return total >= criticalLevel
+        return total >= theCriticalLevel
 
 
     }
 
+    function totalClassName() {
+        if (hasReachedCriticalLevel2()) {
+            return "critical";
+        }
 
+        if (hasReachedWarningLevel()) {
+
+
+            return "warning";
+        }
+    }
 
 
 

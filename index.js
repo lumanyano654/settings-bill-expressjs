@@ -5,7 +5,12 @@ var bodyParser = require('body-parser');
 
 var SettingsBill = require("./setting-bill")
 
+var moment = require("moment");
+moment().fromNow();
+
 var settingsBill = SettingsBill()
+
+
 
 app.use(bodyParser.urlencoded({ extended: false }))
 
@@ -20,8 +25,9 @@ app.use(express.static("public"))
 
 app.get("/", function (req, res) {
     res.render("index", { 
-        settings: settingsBill.getSettings(), 
-        totals: settingsBill.totals()
+     settings: settingsBill.getSettings(), 
+     totals: settingsBill.totals(),
+     color: settingsBill.totalClassName()
     });
 });
 
@@ -32,23 +38,36 @@ app.post("/settings", function (req, res) {
         smsCost: req.body.smsCost,
         warningLevel: req.body.warningLevel,
         criticalLevel: req.body.criticalLevel
-    })
 
+    })
     res.redirect('/')
 })
+
 
 app.post("/action", function (req, res) {
     settingsBill.recordAction(req.body.billItemTypeWithSettings)
+
     res.redirect('/')
 })
+
 app.get("/actions", function (req, res) {
-    res.render('actions', {actions: settingsBill.actions() })
+   var  actionList = settingsBill.actions()
+   for(let key of actionList){
+       key.ago = moment(key.timeStamp).fromNow()
+   }
+   res.render('actions',
+        {actions: actionList});
 })
 
 app.get("/actions/:actionType", function (req, res) {
-    var actionType = req.params.actionType;
-    res.render('actions', {actions: settingsBill.actionsFor(actionType) })  
+    var actionList = settingsBill.actionsFor(req.params.actionType) 
+     for(let key of actionList){
+         key.ago = moment(key.timeStamp).fromNow()
 
+     }
+     res.render('actions',
+            {actions: actionList });
+    
 })
 
 let PORT = process.env.PORT || 3011;
