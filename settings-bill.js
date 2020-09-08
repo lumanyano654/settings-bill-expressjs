@@ -1,90 +1,14 @@
-module.exports = function billWithSettings() {
+module.exports = function settingsBill() {
 
     var theCallCost;
     var theSmsCost;
     var theWarningLevel;
     var theCriticalLevel;
 
-    var totalCallCost = 0;
-    var totalSmsCost = 0;
 
     var actionList = []
 
 
-
-    function setCallCost(callCost) {
-        theCallCost = callCost;
-    }
-
-
-    function getCallCost() {
-
-        return theCallCost
-    }
-
-
-    function setSmsCost(smsCost) {
-        theSmsCost = smsCost;
-    }
-
-
-    function getSmsCost() {
-
-        return theSmsCost
-    }
-
-
-    function setWarningLevel(warningLevel) {
-        theWarningLevel = warningLevel;
-    }
-
-    function getWarningLevel(warningLevel) {
-        return theWarningLevel;
-
-
-    }
-
-    function setCriticalLevel(criticalLevel) {
-        theCriticalLevel = criticalLevel;
-    }
-
-    function getCriticalLevel(criticalLevel) {
-        return theCriticalLevel;
-
-
-    }
-
-    function makeCall() {
-        if (!hasReachedCriticalLevel2()) {
-            totalCallCost += theCallCost;
-        }
-
-    }
-
-    function getTotalCost() {
-        return totalCallCost + totalSmsCost;
-    }
-
-    function getTotalCallCost() {
-        return totalCallCost;
-    }
-    function getTotalSmsCost() {
-        return totalSmsCost;
-    }
-
-    function sendSms() {
-        if (!hasReachedCriticalLevel2()) {
-            return totalSmsCost += theSmsCost;
-        }
-    }
-
-    function hasReachedCriticalLevel2() {
-        return getTotalCost() >= getCriticalLevel();
-    }
-
-
-
-    
 
     function setSettings(settings) {
         theSmsCost = Number(settings.smsCost);
@@ -106,24 +30,24 @@ module.exports = function billWithSettings() {
     function recordAction(action) {
        if(action ){
         if(!hasReachedCriticalLevel2()){
-            var cost = 0;
-    
-            
-         if (action === "sms") {
-                cost = theSmsCost
-            }
-    
-            else if (action === "call") {
-                cost = theCallCost
-            }
-            actionList.push({
-                type: action,
-                cost,
-                timeStamp: new Date()
-            })
-    
-            
+        var cost = 0;
+
+        
+     if (action === "sms") {
+            cost = theSmsCost
         }
+
+        else if (action === "call") {
+            cost = theCallCost
+        }
+        actionList.push({
+            type: action,
+            cost,
+            timeStamp: new Date()
+        })
+
+        
+    }
            
        }
        
@@ -202,19 +126,6 @@ module.exports = function billWithSettings() {
 
     return {
 
-        setCallCost,
-        getCallCost,
-        setSmsCost,
-        getSmsCost,
-        setWarningLevel,
-        getWarningLevel,
-        setCriticalLevel,
-        getCriticalLevel,
-        makeCall,
-        getTotalCost,
-        getTotalCallCost,
-        getTotalSmsCost,
-        sendSms,
         totalClassName,
 
         setSettings,

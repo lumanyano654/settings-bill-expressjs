@@ -3,7 +3,7 @@ var exphbs = require('express-handlebars');
 var app = express();
 var bodyParser = require('body-parser');
 
-var SettingsBill = require("./setting-bill")
+var SettingsBill = require("./settings-bill")
 
 var moment = require("moment");
 moment().fromNow();
