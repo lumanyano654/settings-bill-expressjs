@@ -8,8 +8,6 @@ module.exports = function settingsBill() {
 
     var actionList = []
 
-
-
     function setSettings(settings) {
         theSmsCost = Number(settings.smsCost);
         theCallCost = Number(settings.callCost);
@@ -28,31 +26,31 @@ module.exports = function settingsBill() {
     }
 
     function recordAction(action) {
-       if(action ){
-        if(!hasReachedCriticalLevel2()){
-        var cost = 0;
+        if (action) {
+            if (!hasReachedCriticalLevel2()) {
+                var cost = 0;
 
-        
-     if (action === "sms") {
-            cost = theSmsCost
+
+                if (action === "sms") {
+                    cost = theSmsCost
+                }
+
+                else if (action === "call") {
+                    cost = theCallCost
+                }
+                actionList.push({
+                    type: action,
+                    cost,
+                    timeStamp: new Date()
+                })
+
+
+            }
+
         }
 
-        else if (action === "call") {
-            cost = theCallCost
-        }
-        actionList.push({
-            type: action,
-            cost,
-            timeStamp: new Date()
-        })
 
-        
     }
-           
-       }
-       
-      
-}
 
     function actions() {
         return actionList
@@ -60,12 +58,12 @@ module.exports = function settingsBill() {
 
 
     function actionsFor(type) {
-    
+
         return actionList.filter((action) => action.type === type)
-    
+
 
     }
-    
+
 
 
     function getTotal(type) {
@@ -77,10 +75,10 @@ module.exports = function settingsBill() {
     }
 
     function grandTotal() {
-       
-       return getTotal('sms') + getTotal('call')
 
-      
+        return getTotal('sms') + getTotal('call')
+
+
     }
 
     function totals() {
@@ -125,9 +123,7 @@ module.exports = function settingsBill() {
 
 
     return {
-
         totalClassName,
-
         setSettings,
         getSettings,
         recordAction,
